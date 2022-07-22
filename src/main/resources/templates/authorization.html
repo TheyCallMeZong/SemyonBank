@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="../static/registration.css" th:href="@{/registration.css}" rel="stylesheet" />
+</head>
+
+<form class="form" action="" method="post" th:object="${userAuth}">
+    <input class="input" type="email" placeholder="Ваш e-mail">
+    <input class="input" type="password" placeholder="Пароль">
+    <button class="btn" type="submit">Войти</button>
+</form>
