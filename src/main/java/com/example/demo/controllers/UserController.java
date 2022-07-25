@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @GetMapping("/menu")
-    public String menu(Model model, HttpSession session){
+    public String menu(Model model, HttpSession session) {
         User user = (User) session.getAttribute("infoUser");
         model.addAttribute("user", user);
         return "menu";
