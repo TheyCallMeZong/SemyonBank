@@ -28,6 +28,10 @@ public class User {
     @Setter
     private double balance;
 
+    @Getter
+    @Setter
+    private int personalAccount;
+
 //TODO: убрать это
     @Override
     public String toString(){

@@ -6,11 +6,11 @@ import lombok.Getter;
 public class Transaction {
     @Setter
     @Getter
-    private User fromUser;
+    private int fromUserPersonalAccount;
 
     @Getter
     @Setter
-    private User toUser;
+    private int toUserPersonalAccount;
 
     @Setter
     @Getter
