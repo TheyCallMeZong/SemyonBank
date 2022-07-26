@@ -10,5 +10,5 @@ public class UserAuthorization {
 
     @Getter
     @Setter
-    private String password;
+    private char[] password;
 }

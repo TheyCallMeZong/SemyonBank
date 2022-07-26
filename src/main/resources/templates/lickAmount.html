@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Пополнение</title>
+</head>
+<body>
+<form th:action="@{/lickAmount}" th:method="post" th:object="${user}">
+    <label for="sum">укажите сумму:</label>
+    <input type="text" id="sum" th:field="*{sum}">
+    <button type="submit">пополнить</button>
+</form>
+</body>
+</html>

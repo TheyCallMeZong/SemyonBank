@@ -6,9 +6,12 @@
 </head>
 <body>
 <h1>MENU</h1>
-<p th:text="${user.getEmail()}"/>
-<p th:text="${user.getName()}"/>
+<p th:text="*{user.email}"/>
+<p th:text="*{user.name}"/>
+<p th:text="${user.balance} + '₽' "/>
 <p th:text="${user.getPersonalAccount()}"/>
 <p><a href="transfer">перевод денег</a></p>
+<p><a href="lickAmount">пополнить баланс</a></p>
+
 </body>
 </html>

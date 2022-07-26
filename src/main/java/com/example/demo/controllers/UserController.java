@@ -1,10 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Authorization.UserAuthorization;
-import com.example.demo.models.Transaction;
 import com.example.demo.models.User;
 import com.example.demo.repository.Authentication;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 
 @Controller
 public class UserController {
@@ -36,15 +35,26 @@ public class UserController {
         return "authorization";
     }
 
+    @PostMapping("/authorization")
+    public String auth(@ModelAttribute UserAuthorization userAuthorization, Model model, HttpSession session){
+        User user = service.auth(userAuthorization);
+        if (user == null){
+            return "err";
+        }
+        model.addAttribute("user", user);
+        session.setAttribute("infoUser", user);
+        return "menu";
+    }
+
     //TODO: спринг секьюрити изучить
     //постмап регистрации
     @PostMapping("/registration")
-    public String registration(@RequestParam("repeatPassword") String password,
+    public String registration(@RequestParam("repeatPassword") char[] password,
                                @ModelAttribute User user,
                                Model model,
                                HttpSession session){
-        if (!password.equals(user.getPassword())){
-            System.out.println(password + " " + user.getPassword());
+        if (!Arrays.equals(password, user.getPassword())){
+            System.out.println(Arrays.toString(password) + " " + Arrays.toString(user.getPassword()));
             return "err";
         }
 
@@ -53,34 +63,17 @@ public class UserController {
             user.setPersonalAccount((int) (Math.random() * 1000));
             session.setAttribute("infoUser", user);
             model.addAttribute("user", user);
+            return "menu";
         } else {
             return "err";
         }
-        return "menu";
     }
 
+    //гетмап менюшки
     @GetMapping("/menu")
     public String menu(Model model, HttpSession session) {
         User user = (User) session.getAttribute("infoUser");
         model.addAttribute("user", user);
         return "menu";
-    }
-
-    @GetMapping("/transfer")
-    public String transfer(Model model){
-        model.addAttribute("transfer", new Transaction());
-        return "transfer";
-    }
-
-    @PostMapping("/transfer")
-    public String transfer(@ModelAttribute Transaction tr, Model model, HttpSession session){
-        User user = (User) session.getAttribute("infoUser");
-        tr.setFromUserPersonalAccount(user.getPersonalAccount());
-        System.out.println(tr.getFromUserPersonalAccount() + " " + tr.getToUserPersonalAccount());
-        if(service.transfer(tr)){
-            model.addAttribute("user", user);
-            return "transfer-success";
-        }
-        return "err";
     }
 }

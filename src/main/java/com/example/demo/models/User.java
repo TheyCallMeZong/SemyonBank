@@ -18,7 +18,7 @@ public class User {
 
     @Getter
     @Setter
-    private String password;
+    private char[] password;
 
     @Getter
     @Setter
