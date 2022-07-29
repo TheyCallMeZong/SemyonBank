@@ -3,6 +3,8 @@ package com.example.demo.controllers;
 import com.example.demo.models.Authorization.UserAuthorization;
 import com.example.demo.models.User;
 import com.example.demo.repository.Authentication;
+import com.example.demo.service.AuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +17,10 @@ import java.util.Arrays;
 
 @Controller
 public class UserController {
-    private final Authentication service;
+    private final AuthenticationService service;
 
-    public UserController(Authentication authentication){
+    @Autowired
+    public UserController(AuthenticationService authentication){
         service = authentication;
     }
 
@@ -57,7 +60,6 @@ public class UserController {
             System.out.println(Arrays.toString(password) + " " + Arrays.toString(user.getPassword()));
             return "err";
         }
-
         if (service.registration(user)){
             System.out.println("add new User");
             user.setPersonalAccount((int) (Math.random() * 1000));

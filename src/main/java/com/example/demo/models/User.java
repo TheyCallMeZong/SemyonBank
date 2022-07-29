@@ -3,10 +3,16 @@ package com.example.demo.models;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
     @Setter
     @Getter
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Getter
     @Setter
@@ -22,6 +28,7 @@ public class User {
 
     @Getter
     @Setter
+    @Column(name = "phonenumber")
     private String phoneNumber;
 
     @Getter
@@ -30,11 +37,12 @@ public class User {
 
     @Getter
     @Setter
+    @Column(name = "personalaccount")
     private int personalAccount;
 
 //TODO: убрать это
     @Override
     public String toString(){
-        return "name - " + getName() + " email - " + getEmail() + " phone - " + getPhoneNumber() + " pass " + getPassword();
+        return "id - " + getId() + "name - " + getName() + " email - " + getEmail() + " phone - " + getPhoneNumber() + " pass " + getPassword();
     }
 }
