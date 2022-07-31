@@ -1,39 +1,45 @@
 package com.example.demo.service;
 
-import com.example.demo.UsersRepository;
 import com.example.demo.models.Replenishment;
 import com.example.demo.models.Transaction;
+import com.example.demo.models.User;
 import com.example.demo.repository.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Arrays;
 
 @Service
-public class OperationService implements Operation {
+public class OperationService{
 
-    @Override
+    private final Operation operation;
+
+    @Autowired
+    public OperationService(Operation operation) {
+        this.operation = operation;
+    }
+
     public boolean transfer(Transaction transaction) {
-        var toUser = UsersRepository.USER_LIST.stream().filter(x -> x.getPersonalAccount() == transaction.getToUserPersonalAccount())
-                .findAny().orElse(null);
+        var toUser = operation.findByPersonalAccount(transaction.getToUserPersonalAccount());
 
         if (toUser == null) {
             return false;
         }
-        var fromUser = UsersRepository.USER_LIST.stream().filter(x -> x.getPersonalAccount() == transaction.getFromUserPersonalAccount())
-                .findAny().orElse(null);
+        var fromUser = operation.findByPersonalAccount(transaction.getFromUserPersonalAccount());
 
         if (fromUser != null && fromUser.getBalance() > transaction.getSum()) {
             fromUser.setBalance(fromUser.getBalance() - transaction.getSum());
             toUser.setBalance(toUser.getBalance() + transaction.getSum());
+            operation.saveAll(Arrays.asList(toUser, fromUser));
             return true;
         }
         return false;
     }
 
-    @Override
     public void lickAmount(Replenishment replenishment) {
+        User user = replenishment.getUser();
         if (replenishment.getSum() > 0){
-            System.err.println(replenishment.getSum());
-            System.err.println(replenishment.getUser());
-            replenishment.getUser().setBalance(replenishment.getUser().getBalance() + replenishment.getSum());
+            user.setBalance(user.getBalance() + replenishment.getSum());
+            operation.save(user);
         }
     }
 }

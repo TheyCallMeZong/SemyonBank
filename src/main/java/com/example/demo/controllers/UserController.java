@@ -62,7 +62,6 @@ public class UserController {
         }
         if (service.registration(user)){
             System.out.println("add new User");
-            user.setPersonalAccount((int) (Math.random() * 1000));
             session.setAttribute("infoUser", user);
             model.addAttribute("user", user);
             return "menu";

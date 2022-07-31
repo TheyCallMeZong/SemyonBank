@@ -4,6 +4,8 @@ import com.example.demo.models.Replenishment;
 import com.example.demo.models.Transaction;
 import com.example.demo.models.User;
 import com.example.demo.repository.Operation;
+import com.example.demo.service.OperationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +14,10 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class OperationController {
-    private final Operation operation;
+    private final OperationService operation;
 
-    public OperationController(Operation operation){
+    @Autowired
+    public OperationController(OperationService operation){
         this.operation = operation;
     }
 
